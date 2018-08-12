@@ -1,0 +1,10 @@
+*~
+*#*
+
+*.out
+build
+tmp
+
+TAGS
+
+*.pyc

@@ -1,0 +1,28 @@
+Tests input must be file containig graph's representation.
+
+Graph representation for constructors is:
+first line:
+> n m
+
+Then, for each edge:
+> node-from node-to weight
+
+For example:
+2 1
+0 1 5
+
+Graph representation for constructors of adjmatrix is:
+first line:
+> n m
+then for each 
+
+
+DONE:
+    graph.hpp
+    tprimkruskal.c
+    
+TODO:
+    dijkstra
+    bellman-ford
+    floyd
+    etc.

@@ -1,22 +1,22 @@
 #include <iostream>
-#include "lista.hpp"
+#include "../list.hpp"
 
 #include <stdio.h>
 
 using namespace std;
 
 int main () {
-     List<int> l;
+     list<int> l;
      l.push(1);
      l.push(7);
      for (int i = 0; i < 111; i++)
           l.push(i);
      
-     Node<int> * n = l.first_node();
+     list<int>::Node * n = l.first_node();
      int c = 0;
 
      
-     for (List<int>::iterator iter = l.begin();
+     for (list<int>::iterator iter = l.begin();
           iter != l.end(); ++iter) {
           cout << *iter << " ";
      }

@@ -1,5 +1,5 @@
-CXX=g++ -std=c++11
-CXXFLAGS=-g
+CXX=g++ 
+CXXFLAGS=-g -std=c++11
 
 all: tlist0 tlist1
 
@@ -12,6 +12,13 @@ tlist1:
 
 
 tvector:
+	$(CXX) $(CXXFLAGS) tests/$@.cpp -o build/$@
+
+
+tvector1:
+	$(CXX) $(CXXFLAGS) tests/$@.cpp -o build/$@
+
+tvector2:
 	$(CXX) $(CXXFLAGS) tests/$@.cpp -o build/$@
 
 

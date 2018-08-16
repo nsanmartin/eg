@@ -272,20 +272,19 @@ namespace Graph {
     }
     void edgelist::print() {
         std::vector<edge> sorted(data);
-        for (std::vector<edge>::iterator it = sorted.begin();
-             it != sorted.end(); it++) {
-            if (it->orig > it->dest)
-                std::swap(it->orig,it->dest);
+        for (auto& x : sorted) {
+             if (x.orig > x.dest)
+                  std::swap(x.orig,x.dest);
         }
         sort(sorted.begin(), sorted.end(),
              [](edge x, edge y) {
-                 return x.orig < y.orig || (x.orig == y.orig && x.dest < y.dest);
+                  return x.orig < y.orig || (
+                       x.orig == y.orig && x.dest < y.dest);
              });
-        std::cout << n << data.size() << std::endl;
-        for (std::vector<edge>::iterator it = sorted.begin();
-             it != sorted.end(); it++) {
-            std::cout << it->orig << " " << it->dest << " "
-                      << it-> weight << std::endl;
+        std::cout << n << " " << data.size() << std::endl;
+        for (auto& x : sorted) {
+             std::cout << x.orig << " " << x.dest << " "
+                       << x.weight << std::endl;
         }
     }
 

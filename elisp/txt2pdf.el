@@ -1,10 +1,6 @@
 #!/bin/bash
 ":"; exec emacs -Q  --script "$0" -f main -- "$@" # -*-emacs-lisp-*-
 
-;; (defun main ()
-;;   (mapc 'message (cdr (mapc ' filename-with-extension argv)))
-;;   (kill-emacs))
-
 (defun main ()
   (mapc 'hacer-pdf (cdr  argv))
   (kill-emacs))
@@ -26,11 +22,11 @@
     (insert 
      "#+LaTex_HEADER: \\usepackage[margin=1cm]{geometry}")
     (newline)
-    (insert "#+BEGIN_SRC") (newline)
+    (insert "#+BEGIN_SRC\n") (newline)
     (insert-file-contents filename)
     (goto-char (point-max))
     (newline)
-    (insert "#+END_SRC")
+    (insert "#+END_SRC\n")
     (org-export-to-file
      'latex
      (concat

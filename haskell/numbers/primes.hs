@@ -1,46 +1,59 @@
-primalityTester :: [Integer] -> ([Integer] -> a) -> a
-primalityTester ls = (\f -> f ls)
+import System.Environment
 
--- type PrimalityTester = ([Integer] -> a) -> a
-newPrimalityTester :: ([Integer] -> a) -> a
-newPrimalityTester = primalityTester [3,2]
+readParams :: [String] -> [Integer]
+readParams params = map read params
 
-ttr = newPrimalityTester
+showNumbers :: [Integer] -> [String]
+showNumbers numbers = map show numbers
 
-getLast :: (([Integer] -> Integer) -> Integer) -> Integer
-getLast tester = tester head
+main = do
+     args <- getArgs
+     mapM putStrLn (showNumbers  (filterPrimes (readParams args)))
+     
+data PrimalityTester = PrimalityTester [Integer] 
+instance Show PrimalityTester where
+    show (PrimalityTester ls) = "primes: " ++ (show $ reverse ls)
 
-getPrimes :: (([Integer] -> [Integer]) -> [Integer]) -> [Integer]
-getPrimes tester = tester reverse
+newPrimalityTester :: PrimalityTester 
+newPrimalityTester = PrimalityTester [3,2]
 
-addOne :: (([Integer] -> [Integer]) -> [Integer]) -> Integer -> ([Integer] -> a) -> a
-addOne tester i = primalityTester (i:oldPrimes)
-   where oldPrimes = getPrimes tester
+getPrimes :: PrimalityTester -> [Integer]
+getPrimes (PrimalityTester ls) = reverse ls
 
-divides :: Integer -> Integer -> Bool
-divides x y = mod y x == 0
+getLast :: PrimalityTester -> Integer
+getLast (PrimalityTester (x:xs)) = x
 
---hasDivisor :: (([Integer] -> [Integer]) -> [Integer]) -> Integer -> Bool
-hasDivisor tester n =  hasDivisorIn primes n
-  where primes = getPrimes tester
 
-hasDivisorIn :: [Integer] -> Integer -> Bool
-hasDivisorIn ls n =  any (\x -> x*x <= n && divides x n) ls
+hasDivisor :: PrimalityTester -> Integer -> Bool
+hasDivisor (PrimalityTester ls) n = any (divides n) primes
+    where divides n = (\x -> mod n x == 0)
+          primes = reverse ls
 
--- --foo :: (([Integer] -> a) -> a) -> Integer
--- foo tester = filter bar oddsAhead
---   where testerPrimes = getPrimes tester
---         bar = (\x -> hasDivisorIn testerPrimes x)
---         oddsAhead = map (2*) [(succ nextNum)..]
---         nextNum = getLast tester
 
---oddsAhead :: (([Integer] -> a) -> a) -> [Integer]
-oddsAhead tester = map (\x -> 2*x + 1) [(div nextNum 2)..]
-  where nextNum = 2 + getLast tester
+oddsAhead :: PrimalityTester -> [Integer]
+oddsAhead (PrimalityTester (x:xs)) = filter odd [(x + 2)..]
 
--- foo tester = take 123 $ filter fun oddNums
---   where fun = (\num -> hasDivisor tester num)
---         oddNums = oddsAhead tester
+nextPrime :: PrimalityTester -> Integer
+nextPrime tester = head candidates
+    where candidates = filter (not . hasDivisor tester) largerNums
+          largerNums = oddsAhead tester
 
--- -- foo1 tester = take 1 primesAhead
--- --   where primesAhead = filter (\x -> hasDivisor tester x) (foo0 tester)
+addNextPrime :: PrimalityTester -> PrimalityTester
+addNextPrime (PrimalityTester ls) = PrimalityTester (next : ls)
+    where next = nextPrime (PrimalityTester ls)
+
+expandBounded :: PrimalityTester -> Integer -> PrimalityTester
+expandBounded (PrimalityTester (x:xs)) n =  if x * x >= n
+                               then tester
+                               else expandBounded (addNextPrime tester) n
+    where tester = PrimalityTester (x:xs)
+
+primesBounded :: Integer -> [Integer]
+primesBounded n = getPrimes (expandBounded newPrimalityTester (n * n))
+
+isPrime :: PrimalityTester -> Integer -> Bool
+isPrime tester  n =  n < 4 || not (hasDivisor tester n)
+
+filterPrimes :: [Integer] -> [Integer]
+filterPrimes ls = filter (\n -> isPrime tester n) ls
+    where tester = expandBounded newPrimalityTester (maximum ls)

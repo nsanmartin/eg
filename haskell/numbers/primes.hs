@@ -1,14 +1,9 @@
 import System.Environment
 
-readParams :: [String] -> [Integer]
-readParams params = map read params
-
-showNumbers :: [Integer] -> [String]
-showNumbers numbers = map show numbers
-
 main = do
-     args <- getArgs
-     mapM putStrLn (showNumbers  (filterPrimes (readParams args)))
+     contents <- getContents
+     mapM putStrLn (map show (filterPrimes (map read (lines contents))))
+
      
 data PrimalityTester = PrimalityTester [Integer] 
 instance Show PrimalityTester where
@@ -23,11 +18,10 @@ getPrimes (PrimalityTester ls) = reverse ls
 getLast :: PrimalityTester -> Integer
 getLast (PrimalityTester (x:xs)) = x
 
-
 hasDivisor :: PrimalityTester -> Integer -> Bool
 hasDivisor (PrimalityTester ls) n = any (divides n) primes
     where divides n = (\x -> mod n x == 0)
-          primes = reverse ls
+          primes = filter (\x -> x * x <= n) $ reverse ls
 
 
 oddsAhead :: PrimalityTester -> [Integer]

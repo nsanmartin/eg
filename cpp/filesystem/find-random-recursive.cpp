@@ -1,3 +1,8 @@
+// Shows one file with pro
+// Compile using:
+// g++ FILENAME -std=c++17 lstdc++fs
+
+
 #include <iostream>
 #include <string>
 #include <vector>

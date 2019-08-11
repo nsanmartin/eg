@@ -56,4 +56,5 @@ int main () {
 
 
     dataframe<int, std::string, std::string, int, float> df;
+    auto x = df.access<int>();
 }

@@ -55,11 +55,11 @@ void Combinations::print_combinations(int index, int tomados) {
 
 int main(int argc, char** argv) {
     char c;
-    bool string_param{false};
-    while ((c = getopt(argc, argv, "s")) != -1) {
+    bool numeric_param{false};
+    while ((c = getopt(argc, argv, "n")) != -1) {
         switch (c) {
-        case 's':
-            string_param = true;
+        case 'n':
+            numeric_param = true;
             break;
         case '?':
             std::cerr << "Opcion desconocida"
@@ -72,20 +72,21 @@ int main(int argc, char** argv) {
     }
     
     if (argc - optind != 2) {
-        std::cout << "./prog <n> <k> \n";
+        std::cout << "./prog  <string>  <k> \n"
+                  << "./prog -s <n>  <k> \n";
     } else {
 
         int k{std::atoi(argv[optind+1])};
 
-        if (string_param) {
-            std::string string{argv[optind]};
-            Combinations combs(string, k);
-            combs.print_combinations(0, 0);
-        } else {
+        if (numeric_param) {
             int n{std::atoi(argv[optind])};
             Combinations combs(n, k);
             combs.print_combinations(0, 0);
+        } else {
+            std::string string{argv[optind]};
+            Combinations combs(string, k);
+            combs.print_combinations(0, 0);
+
         }
     }
-
 }

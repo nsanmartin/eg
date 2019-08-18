@@ -15,11 +15,11 @@ public:
 
 
     template<std::size_t... I> 
-    auto elements_impl(int index, std::index_sequence<I...>) {
+    auto at_impl(int index, std::index_sequence<I...>) {
         return std::make_tuple(std::get<I>(vectors).at(index)...);
     }
-    auto elements(int index) {
-        return elements_impl(index, std::index_sequence_for<Ts...>{});
+    auto at(int index) {
+        return at_impl(index, std::index_sequence_for<Ts...>{});
     }
 
 
@@ -47,7 +47,7 @@ public:
         push_row_impl(t, std::index_sequence_for<Ts...>{});
     }
 
-
+    void add_row(Ts... Args) { push_row(std::make_tuple(Args...)); }
     auto nrows() const { return std::get<0>(vectors).size(); }
 
 };
@@ -58,6 +58,9 @@ int main() {
     df.push_row(std::make_tuple(23, 98.55f, "f__sdfd", 113));
     df.push_row(std::make_tuple(23, 8.0055f, "34t3g%fasad", 1003));
 
+    df.add_row(1234, 0.0000001f, "__string__", 99);
+    
     std::cout << df.nrows() << " rows:\n";
     df.print_table();
+    auto r = df.at(0);
 }

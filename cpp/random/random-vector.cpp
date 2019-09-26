@@ -12,7 +12,7 @@ int main(int arc, char ** argv) {
             return std::stoul(str, 0, 10);
         });
 
-    if (ns.size() == 0) { ns.push_back(33); }
+    if (ns.size() == 0) { ns.push_back(29); }
     std::random_device random_device;
 
     std::mt19937 mersenne_engine {random_device()};

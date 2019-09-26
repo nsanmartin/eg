@@ -1,37 +1,51 @@
 #include <iostream>
 #include <fstream>
+#include <array>
+#include <string>
 
-#include <cstring>
+using CharTable = std::array<unsigned,256>;
+using TableIt = CharTable::iterator;
 
-void print_table(unsigned * table, int n) {
+void print(TableIt begin, TableIt end) {
     unsigned count = 0;
-    for (int i = 0; i < n; i++) {
-        if (table[i]) {
-            count++;
-            char ch{(char)i};
-            std::cout << ch << "\t" << i << "\t" << table[i] <<
-                std::endl;
+    auto it = begin;
+    for (; it != end; ++it) {
+        if (*it) {
+            ++count;
+            auto i = std::distance(begin, it);
+            char ch{(char) i};
+            std::cout << ch << "\t" << i << "\t" << *it
+                      << '\n';
+
         }
     }
-    std::cout << count << " chars" << std::endl;
+    std::cout << count << " chars\n";
 }
 
 
-void chars_table(char * filename) {
+std::array<unsigned, 256> chars_table(const std::string& filename) {
     char ch;
-    unsigned table[256] = {};
+
+    std::array<unsigned, 256> table{};
     std::fstream f(filename);
     while ( f >> std::noskipws >> ch ) {
         table[ch]++;
     }
-    print_table(table, 256);
-    
+
+    return table;
     
 }
 
 
 int main(int argc, char ** argv) {
+
+    if (argc == 1) {
+        std::cout << "use: " << argv[0] << " FILE [FILE...]\n";
+        return 0;
+    }
+    
     for (int i = 1; i < argc; i++) {
-        chars_table(argv[i]);
+        auto table = chars_table(argv[i]);
+        print (table.begin(), table.end());
     }
 }

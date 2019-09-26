@@ -25,7 +25,7 @@ namespace eg {
         vector(const vector& v);
         vector& operator=(const vector& v);
      
-        // ~vector() { delete[] elem; }
+        ~vector() { }
 
         T& operator[](int i);
 
@@ -53,8 +53,7 @@ namespace eg {
     template<typename T>
     T& vector<T>::operator[](int i) {
         if (i < 0 || sz <= i)
-            throw std::runtime_error(std::string{
-                    "index out of range"});
+            throw std::runtime_error(std::string{"index out of range"});
         return elem[i];
     }
 

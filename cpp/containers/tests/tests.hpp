@@ -35,8 +35,8 @@ namespace eg { namespace tests {
         }
         
         template<typename T>
-        bool test_equal(const eg::vector<T>& eg_vector, const std::vector<T>& std_vector, const std::string& testname) {
-            return test_equal(std_vector, eg_vector, testname);;
+        void test_equal(const eg::vector<T>& eg_vector, const std::vector<T>& std_vector, const std::string& testname) {
+            test_equal(std_vector, eg_vector, testname);
         }
 
 

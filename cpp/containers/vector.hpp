@@ -8,17 +8,18 @@ namespace eg {
     public:
         using iterator = T*;
     private:
-        T* elem;
+        std::unique_ptr<T[]> elem;
         int sz;
         int capacity;
     public:
 
         
-        vector(int s = 0) {
+        vector(int s = 0) : sz{s} {
             if (s < 0)
                 throw std::runtime_error(std::string{"negative size for vector"});
-            elem = new T[sz=s];
+            
             capacity = sz + 4;
+            elem.reset(new T[capacity]);
         }
 
         vector(const vector& v);
@@ -28,10 +29,10 @@ namespace eg {
 
         T& operator[](int i);
 
-        T* begin() { return elem; }
-        T* end() { return elem + sz; }
-        const T* begin() const { return elem; }
-        const T* end() const { return elem + sz; }
+        T* begin() { return elem.get(); }
+        T* end() { return elem.get() + sz; }
+        const T* begin() const { return elem.get(); }
+        const T* end() const { return elem.get() + sz; }
 
         int size() const { return sz;};
         bool empty() const { return size() == 0; }
@@ -44,7 +45,7 @@ namespace eg {
 
     template<typename T>
     vector<T>::vector(const vector& v)
-        : elem{new T[v.sz + 4]}, sz{v.sz}, capacity{v.sz + 4}
+        : elem{new T[v.capacity]}, sz{v.sz}, capacity{v.capacity}
     {
         std::copy(v.begin(), v.end(), elem);
     }
@@ -61,10 +62,9 @@ namespace eg {
     template<typename T>
     void vector<T>::push_back(const T& x) {
         if (sz == capacity) {
-            T* a = new T[capacity+=capacity];
-            std::copy(elem, elem + sz, a);
-            delete [] elem;
-            elem = a;
+            std::unique_ptr<T[]> a {new T[capacity+=capacity]};
+            std::copy(begin(), end(), a.get());
+            elem.swap(a);
         }
 
         elem[sz++] = x;
@@ -76,10 +76,9 @@ namespace eg {
         if (!sz)
             throw std::runtime_error(std::string{"negative size for vector"});
         if (sz < capacity/4) {
-            T* a = new T[capacity /= 2];
-            std::copy(elem, elem + sz, a);
-            delete [] elem;
-            elem = a;
+            std::unique_ptr<T[]> a {new T[capacity /= 2] };
+            std::copy(begin(), end(), a.get());
+            elem.swap(a);
         }
         --sz;
         return;

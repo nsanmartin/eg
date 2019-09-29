@@ -2,7 +2,9 @@ cmake_minimum_required(VERSION 3.2)
 project(eg-containters-list)  
 enable_testing()
 
-include_directories(../../../..)
+include_directories(./)
+include_directories(../../tests)
+
 
 file( GLOB TEST_SOURCES "tests/*.cpp")
 foreach(testssource ${TEST_SOURCES})

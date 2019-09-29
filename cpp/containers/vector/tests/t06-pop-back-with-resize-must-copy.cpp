@@ -1,5 +1,7 @@
 #include <iostream>
-#include "tests.hpp"
+#include <vector>
+#include <egtests.hpp>
+#include <egvector.hpp>
 
 int main(int argc, char** argv) {
 
@@ -19,6 +21,6 @@ int main(int argc, char** argv) {
         v.pop_back();
     }
     
-    eg::tests::test_equal(v, w, argv[0]);
+    eg::tests::test_assert_same_elems(v, w, argv[0]);
 
 }

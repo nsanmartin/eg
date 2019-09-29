@@ -1,5 +1,5 @@
 #include <iostream>
-#include "../list.hpp"
+#include <eglist.hpp>
 #include <list>
 
 //using namespace std;

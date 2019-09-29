@@ -1,5 +1,7 @@
 #include <iostream>
-#include "tests.hpp"
+#include <egtests.hpp>
+#include <egvector.hpp>
+
 
 int main(int argc, char** argv) {
 

@@ -3,11 +3,12 @@
 
 #include <string>
 #include <vector>
-#include <eg/cpp/containers/vector.hpp>
+// #include <eg/cpp/tests/tests.hpp>
+#include <eg/cpp/containers/vector/vector.hpp>
 
 namespace eg { namespace tests {
 
-        void test_condition (bool condition, const std::string& testname) {
+        void test_assert (bool condition, const std::string& testname) {
             std::cout << testname;
             if ( condition ) {
                 std::cout << " Ok.\n";
@@ -31,7 +32,7 @@ namespace eg { namespace tests {
         
         template<typename T>
         void test_equal (const std::vector<T>& std_vector, const eg::vector<T>& eg_vector, const std::string& testname) {
-            test_condition (eg::tests::are_equal(std_vector, eg_vector), testname);
+            test_assert (eg::tests::are_equal(std_vector, eg_vector), testname);
         }
         
         template<typename T>

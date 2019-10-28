@@ -91,14 +91,16 @@ public:
     void read_char(char c) { mState->read_char(*this,c); }
 };
 
-
-
+//
+//
+//
+//
 struct MachineVariant : public StateMachine {
     using TableType = const std::unordered_map<
         char,
         std::function<void(MachineVariant& m)>> ;
 
-
+ 
     struct Q0 {
         static const TableType table;
 
@@ -140,9 +142,9 @@ struct MachineVariant : public StateMachine {
     };
 
 
-    using State = std::variant<Q0, Q1, Q2>;
+    using StateUnion = std::variant<Q0, Q1, Q2>;
 
-    State mState;
+    StateUnion mState;
     std::ifstream mIfstream;
 public:
     MachineVariant(const std::string& filename)

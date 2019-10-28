@@ -17,8 +17,6 @@ static struct option long_opts[] = {
     {0, 0, 0, 0}
 };
 
-
-
 enum class Implementation { Hierarchy, Variant, Switch };
 
 MachineHierarchy::TableType
@@ -92,20 +90,16 @@ int main (int argc, char* argv[]) {
     
     try {
         std::function<void(const char*)> fun;
+
         switch (impl) {
-            
         case Implementation::Hierarchy: {
             std::cout << "Implementation::Hierarchy:\n";
-            fun = [](const char * fname) {
-                           MachineHierarchy m(fname);
-                       };
+            fun = [](const char * fname) { MachineHierarchy m(fname);};
         }
             break;
         case Implementation::Variant: {
             std::cout << "Implementation::Variant:\n";
-            fun = [](const char * fname) {
-                           MachineVariant m(fname);
-                               };
+            fun = [](const char * fname) { MachineVariant m(fname);};
         }
             break;
         case Implementation::Switch: {
@@ -118,6 +112,7 @@ int main (int argc, char* argv[]) {
         for (int i = optind; i < argc; ++i) {
             fun(argv[i]);
         }
+        
     } catch (std::exception& e) {
         std::cerr << "error: " << e.what() << '\n';
     }

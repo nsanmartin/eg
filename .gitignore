@@ -6,5 +6,8 @@ build
 tmp
 
 TAGS
+GPATH
+GRTAGS
+GTAGS
 
 *.pyc

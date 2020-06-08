@@ -23,6 +23,3 @@ class Experiment():
             self.predictions.append(y_pred)
             self.accuracys.append(accuracy_score(self.data.y_test, y_pred))
         
-## import experiment, data
-## x = xp.Experiment(data.Data(100, 3, 4), [xp.KNN(), xp.LDA(), xp.QDA()])
-## x.accuracys

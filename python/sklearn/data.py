@@ -1,6 +1,5 @@
 import numpy as np
 
-from sklearn.discriminant_analysis import LinearDiscriminantAnalysis as LDA
 from sklearn.model_selection import train_test_split
 
 class NormalDist():

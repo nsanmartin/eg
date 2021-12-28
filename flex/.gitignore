@@ -1,4 +1,5 @@
 lex.yy.c
+lex.yy.cc
 a.out
 test*
 

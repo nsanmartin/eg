@@ -2,6 +2,7 @@
 #include <assert.h>
 
 
+int range_len(Range r) { return r.end - r.beg; }
 
 bool word_eq(Word v, Word w) { return v.size == w.size && strcmp(v.cstr, w.cstr) == 0; }
 
@@ -14,6 +15,7 @@ Word word_from_range(Range r) {
 // Range methods
 
 //bool range_is_empty(Range r) { return r.beg  >= r.end; }
+bool range_is_empty(Range r) { return r.end <= r.beg || *r.beg == '\n'; }
 
 char * skip_space_or_null(char* beg, char* end) {
     char* rv = beg;

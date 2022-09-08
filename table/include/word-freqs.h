@@ -8,7 +8,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "do-words.h"
 
 typedef enum { Empty, HasNext, End, Error } StreamStatus;
 
@@ -20,6 +19,11 @@ typedef struct {
     int size;
 } Word;
 
+
+typedef struct {
+    char* beg;
+    char* end;
+} Range;
 
 typedef struct {
     char* data;
@@ -42,9 +46,5 @@ WordStream make_word_stream(int fd, char* arr, int size) ;
 Word get_next_word(WordStream* ws) ;
 bool word_eq(Word v, Word w) ;
 Word word_from_range(Range r) ;
-
-
-
-
-
+int range_len(Range r) ;
 #endif

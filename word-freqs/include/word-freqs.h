@@ -1,8 +1,12 @@
+#ifndef __WORD_FREQS_H_
+#define __WORD_FREQS_H_
+
 #include <stdbool.h>
 #include <unistd.h>
 #include <stdio.h>
 #include <ctype.h>
 #include <stdlib.h>
+#include <string.h>
 
 
 typedef enum { Empty, HasNext, End, Error } StreamStatus;
@@ -40,3 +44,7 @@ typedef struct {
 
 WordStream make_word_stream(int fd, char* arr, int size) ;
 Word get_next_word(WordStream* ws) ;
+bool word_eq(Word v, Word w) ;
+Word word_from_range(Range r) ;
+int range_len(Range r) ;
+#endif

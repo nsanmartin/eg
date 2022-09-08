@@ -2,18 +2,21 @@
 #include <ctype.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include "hash.h"
+#include "word-freqs.h"
  
 char * skip_space_or_null(char* beg, char* end) ;
 
-#define BUFFER_SIZE 80000
+#define BUFFER_SIZE 400
+#define NHASHES 50
 
 #define NOTSPACE 0
 #define SPACE 1
 
-typedef struct {
-    char* beg;
-    char* end;
-} Range;
+//typedef struct {
+//    char* beg;
+//    char* end;
+//} Range;
 
 typedef struct {
     Range range;
@@ -21,12 +24,9 @@ typedef struct {
 } Line;
 
 
-int range_len(Range r) { return r.end - r.beg; }
-
 bool is_incomplete_line(Range r, int size) { return r.end == r.beg + size; }
 
 
-bool range_is_empty(Range r) { return r.end <= r.beg || *r.beg == '\n'; }
 bool range_has_next(Range r) { return r.end > r.beg && *r.beg != '\n'; }
 bool subrange_has_word(Range r, char* end) { return r.end < end && (isspace(*r.end) || *r.end == '\0'); }
 bool range_is_eol(Range r) { return r.beg < r.end && *r.beg == '\n'; }
@@ -57,12 +57,18 @@ int copy_range(Range r, char* dest) {
 
 //TODO: do a WordStream reader such as the read version
 
+void do_lines(FILE* stream) {
+}
+
+
 int main(void)
 {
     char buf[BUFFER_SIZE];
 
-    int outer = 0;
-    int inner = 0;
+    const unsigned long nhashes = NHASHES;
+    
+    Entry* entries = malloc(sizeof (Entry) * nhashes);
+    LimitedHashMap map = { .table = entries, .size = nhashes, .inserts = 0, .stats = {0} };
 
     Line ln = { .range = { .beg = buf, .end = buf + BUFFER_SIZE}, .end_of_line = false };
 
@@ -82,6 +88,8 @@ int main(void)
         
                     *w.end = '\0';
                     printf("%s\n", w.beg); 
+                    Entry* e = get(&map, word_from_range(w));
+                    e->v++;
                 }
             }
 
@@ -99,4 +107,16 @@ int main(void)
         ln.range.beg = buf + ncopied;
         ln.range.end = buf + BUFFER_SIZE - ncopied;
     }
+
+    for (int i = 0; i < map.size; ++i) {
+        Entry e = map.table[i];
+        if (e.k.cstr != NULL) {
+            printf("%s: %d\n", e.k.cstr, e.v);
+        }
+    }
+
+
+    fprintf(stderr, "inserts: %ld\n", map.inserts);
+    fprintf(stderr, "movs: %ld\n", map.stats.moves);
+    fprintf(stderr, "max move: %ld\n", map.stats.max_move);
 }

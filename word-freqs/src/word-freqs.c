@@ -2,9 +2,20 @@
 #include <assert.h>
 
 
+int range_len(Range r) { return r.end - r.beg; }
+
+bool word_eq(Word v, Word w) { return v.size == w.size && strcmp(v.cstr, w.cstr) == 0; }
+
+Word word_from_range(Range r) {
+    *r.end = '\0';
+    Word rv = { .cstr = r.beg, .size = range_len(r) };
+    return rv;
+}
+
 // Range methods
 
-bool range_is_empty(Range r) { return r.beg  >= r.end; }
+//bool range_is_empty(Range r) { return r.beg  >= r.end; }
+bool range_is_empty(Range r) { return r.end <= r.beg || *r.beg == '\n'; }
 
 char * skip_space_or_null(char* beg, char* end) {
     char* rv = beg;
@@ -22,7 +33,6 @@ char* range_move_skip_word(Range* r) {
     return r->beg;
 }
 
-int range_len(Range r) { return r.end - r.beg; }
 
 
 // buffer methods

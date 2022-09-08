@@ -13,11 +13,6 @@ char * skip_space_or_null(char* beg, char* end) ;
 #define NOTSPACE 0
 #define SPACE 1
 
-//typedef struct {
-//    char* beg;
-//    char* end;
-//} Range;
-
 typedef struct {
     Range range;
     bool end_of_line;
@@ -57,56 +52,61 @@ int copy_range(Range r, char* dest) {
 
 //TODO: do a WordStream reader such as the read version
 
-void do_lines(FILE* stream) {
-}
+typedef struct Lambda Lambda;
 
+struct Lambda {
+    LimitedHashMap* map;
+    void (*app) (Lambda, Range);
+};
 
-int main(void)
-{
+void do_words(FILE* stream, Lambda lam)  {
     char buf[BUFFER_SIZE];
-
-    const unsigned long nhashes = NHASHES;
-    
-    Entry* entries = malloc(sizeof (Entry) * nhashes);
-    LimitedHashMap map = { .table = entries, .size = nhashes, .inserts = 0, .stats = {0} };
-
     Line ln = { .range = { .beg = buf, .end = buf + BUFFER_SIZE}, .end_of_line = false };
-
     for ( ; fgets(ln.range.beg, range_len(ln.range), stdin) != NULL; ) {
-
         ln.range.beg = buf;
         ln.end_of_line = false;
         Range w = {.beg = 0, .end = 0};
-
         while (!ln.end_of_line && range_has_next(ln.range)) {
             w = range_get_next_word(ln.range);
-
-
             if(subrange_has_word(w, ln.range.end)) {
                 if (range_has_next(w)) {
                     ln.end_of_line = *w.end == '\n';
-        
-                    *w.end = '\0';
-                    printf("%s\n", w.beg); 
-                    Entry* e = get(&map, word_from_range(w));
-                    e->v++;
+                    lam.app(lam, w);
                 }
             }
-
             ln.range.beg = w.end;
-
         }
-
         int ncopied = 0;
         if (!end_of_line(ln) && range_has_next(w)) {
             ncopied = copy_range(w, buf);
             ln.range.beg = buf + ncopied;
             ln.range.end = buf + BUFFER_SIZE - ncopied;
         }
-
         ln.range.beg = buf + ncopied;
         ln.range.end = buf + BUFFER_SIZE - ncopied;
     }
+}
+
+
+void lam_print_range(Lambda lam, Range r) {
+    *r.end = '\0';
+    printf("%s\n", r.beg); 
+    Entry* e = get(lam.map, word_from_range(r));
+    e->v++;
+}
+
+int main(void)
+{
+
+    const unsigned long nhashes = NHASHES;
+    
+    Entry* entries = malloc(sizeof (Entry) * nhashes);
+    LimitedHashMap map = { .table = entries, .size = nhashes, .inserts = 0, .stats = {0} };
+
+    Lambda lambda = { .map = &map, .app = &lam_print_range };
+
+    do_words(stdin, lambda);
+
 
     for (int i = 0; i < map.size; ++i) {
         Entry e = map.table[i];

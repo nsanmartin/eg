@@ -46,5 +46,5 @@ WordStream make_word_stream(int fd, char* arr, int size) ;
 Word get_next_word(WordStream* ws) ;
 bool word_eq(Word v, Word w) ;
 Word word_from_range(Range r) ;
-int range_len(Range r) ;
+//int range_len(Range r) ;
 #endif

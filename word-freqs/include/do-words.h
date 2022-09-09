@@ -4,6 +4,7 @@
 #include <ctype.h>
 #include <stdbool.h>
 #include <stdio.h>
+#include "lambda.h"
 
 
 typedef struct {
@@ -15,13 +16,6 @@ typedef struct {
     Range range;
     bool end_of_line;
 } Line;
-
-typedef struct Lambda Lambda;
-
-struct Lambda {
-    void* ctx;
-    void (*app) (Lambda, Range);
-};
 
 
 void do_words(FILE* stream, Lambda lam)  ;

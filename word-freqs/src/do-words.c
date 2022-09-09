@@ -17,7 +17,7 @@ void do_words(FILE* stream, Lambda lam)  {
             if(subrange_has_word(w, ln.range.end)) {
                 if (range_has_next(w)) {
                     ln.end_of_line = *w.end == '\n';
-                    lam.app(lam, w);
+                    lam.app(lam, &w);
                 }
             }
             ln.range.beg = w.end;

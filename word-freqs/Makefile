@@ -1,10 +1,11 @@
 BUILD=./build
-LIB=./src
+LIB=../src
 INCLUDE=./include 
-INCLUDE_LAMBDA=../lambda/include
+INCLUDE_LAMBDA=../include
 bench:
-	gcc -O3 -I$(INCLUDE) -I$(INCLUDE_LAMBDA) -o $(BUILD)/ver-read ver-read.c $(LIB)/*.c
-	gcc -O3 -I$(INCLUDE) -I$(INCLUDE_LAMBDA) -o $(BUILD)/ver-fgets ver-fgets.c $(LIB)/*.c
+	gcc -O3 -I$(INCLUDE) -I$(INCLUDE_LAMBDA) -o $(BUILD)/ver-read ver-read.c $(LIB)/*.c ./src/*.c
+	gcc -O3 -I$(INCLUDE) -I$(INCLUDE_LAMBDA) -o $(BUILD)/ver-fgets ver-fgets.c $(LIB)/*.c ./src/*.c
+
 	gcc -O3 -I$(INCLUDE) -I$(INCLUDE_LAMBDA) -o $(BUILD)/ver-getline ver-getline.c
 	g++ -O3 -I$(INCLUDE) -I$(INCLUDE_LAMBDA) -o $(BUILD)/ver-cin ver-cin.cpp
 	ghc -no-keep-o-files -no-keep-hi-files -O2 ver-words.hs -o $(BUILD)/ver-words

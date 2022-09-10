@@ -27,4 +27,7 @@ typedef struct Lambda {
         *__ptr_ = VALUE ; \
         })
 
+#define POINTED(PointedType, Pointer) (*((PointedType*)Pointer))
+
+
 #endif

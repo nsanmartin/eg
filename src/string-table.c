@@ -69,7 +69,7 @@ void stringTableGet(StringTable* m, Str k, Result* res) {
             res->err = false;
             return;
         }
-        h = (h + 1) % m->size;
+        h = (h + 7) % m->size;
         ++m->stats.moves;
         nmovs++;
     }

@@ -26,9 +26,9 @@ void lam_print_range(Lambda* lam, void* arg) {
     Range r = GET_POINTED_VALUE(Range, arg);
     *r.end = '\0';
     printf("%s\n", r.beg); 
-    LimitedHashMap* map = (LimitedHashMap*) lam->ctx;
-    Entry* e = get(map, word_from_range(r));
-    e->v++;
+    //LimitedHashMap* map = (LimitedHashMap*) lam->ctx;
+    //Entry* e = get(map, word_from_range(r));
+    //e->v++;
 }
 
 int main(void)

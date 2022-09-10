@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include "string-table.h"
 #include "do-words.h"
+#include "eg-result.h"
 
 #define TABLE_INITIAL_SIZE 100
 
@@ -31,13 +32,18 @@ void lam_print(Lambda lam, void* arg) {
     *r.end = '\0';
     printf("%s\n", r.beg); 
 
-    Entry* e = stringTableGet(lam.ctx, strFromRange(r));
+    Result res;
+    stringTableGet(lam.ctx, strFromRange(r), &res);
+    Entry* e = res.ok;
     e->v++;
+
+    SET_POINTED_VALUE(lam.value, res);
 }
 
 int main() {
     StringTable table = stringTableWithSize(TABLE_INITIAL_SIZE);
-    Lambda lambda = { .ctx = &table, .app = &lam_print };
+    Result lam_res = {0};
+    Lambda lambda = { .ctx = &table, .app = &lam_print, .value = &lam_res};
     do_words(stdin, lambda);
     table_entries_debug(table);
     table_stats_debug(table);

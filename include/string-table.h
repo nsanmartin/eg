@@ -27,7 +27,7 @@ typedef struct {
 
 unsigned long hash(unsigned char *str);
 StringTable stringTableWithSize(size_t size) ;
-Entry* stringTableGet(StringTable* m, Str k) ;
+void stringTableGet(StringTable* m, Str k, Result* res) ;
 
 
 #endif

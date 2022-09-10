@@ -14,8 +14,8 @@ typedef struct {
 } Str;
 
 
-inline bool strEq(Str x, Str y) { return x.len == y.len && strcmp(x.cstr, y.cstr) == 0; }
-void strCopy(Str s, Result res) ;
+bool strEq(Str x, Str y) ;
+void strCopy(Str s, Result* res) ;
 
 #endif
 

@@ -34,32 +34,40 @@ hash(unsigned char *str)
 }
 
 
-Entry* stringTableGet(StringTable* m, Str k) {
+void stringTableGet(StringTable* m, Str k, Result* res) {
     if (k.len == 0 || k.cstr == NULL) {
         fprintf(stderr, "Error: null key\n");
-        exit(1);
+        res->err = true;
+        return;
     }
 
     unsigned int h = hash(k.cstr) % m->size;
     unsigned int nmovs = 0;
     while (true) {
-        Entry* rv =  &m->table[h];
-        if (rv->k.cstr == NULL) {
+
+        Entry* e = &m->table[h];
+        if (e->k.cstr == NULL) {
             if (++m->inserts > m->size * 65 / 100) {
                 fprintf(stderr, "Too many keys for map!\n");
-                exit(1);
+                res->err = true;
+                return;
             }
 
-            Result r = { .ok = &rv->k, .err = false };
-            strCopy(k, r);
-            if (r.err) {
+            Result r_copy = { .ok = &e->k, .err = false };
+            strCopy(k, &r_copy);
+            if (r_copy.err) {
                 fprintf(stderr, "Memory error!\n");
-                exit(1);
+                res->err = true;
+                return;
             }
             if(nmovs > m->stats.max_move) { m->stats.max_move = nmovs; }
-            return rv;
-        } else if (strEq(rv->k, k)) {
-            return rv;
+            res->ok = e;
+            res->err = false;
+            return;
+        } else if (strEq(e->k, k)) {
+            res->ok = e;
+            res->err = false;
+            return;
         }
         h = (h + 1) % m->size;
         ++m->stats.moves;

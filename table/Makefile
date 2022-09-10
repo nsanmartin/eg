@@ -8,10 +8,12 @@ a:
 	$(LIB)/*.c 
 
 debug:
-	gcc -g -O1 -I$(INCLUDE) -I../include \
+	gcc -g -O0 -I$(INCLUDE) -I../include \
 	-o $(BUILD)/debug main.c \
 	$(LIB)/*.c 
 
 test:
 	gcc -o $(BUILD)/$@ test.c $(LIB)/word-freqs.c
 
+clean:
+	rm $(BUILD)/*

@@ -3,15 +3,14 @@
 
 #include <stdbool.h>
 
-#include "eg-str.h"
 
 typedef struct {
     char* msg;
 } Error;
 
 typedef struct {
-    void* ok;
     bool err;
+    void* ok;
 } Result;
 
 #endif

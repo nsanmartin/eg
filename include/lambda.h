@@ -4,7 +4,7 @@
 typedef struct Lambda Lambda;
 
 typedef struct Lambda {
-    void (*app)(Lambda, void*);
+    void (*app)(Lambda*, void*);
     void* value;
     void* ctx;
 } Lambda;
@@ -17,10 +17,10 @@ typedef struct Lambda {
         })
 
 
-#define LAMBDA_SET_VALUE(LAMBDA, VALUE) ({ \
-        typeof(VALUE)* __lambda_value_ptr_casted_ = LAMBDA.value; \
-        *__lambda_value_ptr_casted_ = VALUE; \
-        })
+//#define LAMBDA_SET_VALUE(LAMBDA, VALUE) ({ \
+//        typeof(VALUE)* __lambda_value_ptr_casted_ = LAMBDA.value; \
+//        *__lambda_value_ptr_casted_ = VALUE; \
+//        })
 
 #define SET_POINTED_VALUE(PTR, VALUE) ({\
         typeof(VALUE)* __ptr_ = PTR; \

@@ -22,7 +22,7 @@ StringTable stringTableWithSize(size_t size) {
 }
 
 unsigned long
-hash(unsigned char *str)
+string_hash(unsigned char *str)
 {
     unsigned long hash = 5381;
     int c;
@@ -41,7 +41,7 @@ void stringTableGet(StringTable* m, Str k, Result* res) {
         return;
     }
 
-    unsigned int h = hash(k.cstr) % m->size;
+    unsigned int h = string_hash(k.cstr) % m->size;
     unsigned int nmovs = 0;
     while (true) {
 

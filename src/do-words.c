@@ -40,7 +40,7 @@ int copy_range(Range r, char* dest) {
 }
 
 
-void do_words(FILE* stream, Lambda lam)  {
+void do_words(FILE* stream, Lambda* lam)  {
     char buf[BUFFER_SIZE];
     Line ln = { .range = { .beg = buf, .end = buf + BUFFER_SIZE}, .end_of_line = false };
     for ( ; fgets(ln.range.beg, range_len(ln.range), stdin) != NULL; ) {
@@ -52,9 +52,9 @@ void do_words(FILE* stream, Lambda lam)  {
             if(subrange_has_word(w, ln.range.end)) {
                 if (range_has_next(w)) {
                     ln.end_of_line = *w.end == '\n';
-                    lam.app(lam, &w);
-                    if (lam.value) { 
-                        Result* lam_res = lam.value;
+                    lam->app(lam, &w);
+                    if (lam->value) { 
+                        Result* lam_res = lam->value;
                         if(lam_res-> err) {
                             return;
                         }

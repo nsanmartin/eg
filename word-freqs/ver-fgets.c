@@ -22,11 +22,11 @@ bool range_is_eol(Range r) { return r.beg < r.end && *r.beg == '\n'; }
 
 //TODO: do a WordStream reader such as the read version
 
-void lam_print_range(Lambda lam, void* arg) {
+void lam_print_range(Lambda* lam, void* arg) {
     Range r = GET_POINTED_VALUE(Range, arg);
     *r.end = '\0';
-    printf(">>%s\n", r.beg); 
-    LimitedHashMap* map = (LimitedHashMap*) lam.ctx;
+    printf("%s\n", r.beg); 
+    LimitedHashMap* map = (LimitedHashMap*) lam->ctx;
     Entry* e = get(map, word_from_range(r));
     e->v++;
 }
@@ -42,7 +42,7 @@ int main(void)
 
     Lambda lambda = { .ctx = &map, .app = &lam_print_range };
 
-    do_words(stdin, lambda);
+    do_words(stdin, &lambda);
 
 
     for (int i = 0; i < map.size; ++i) {
@@ -53,7 +53,7 @@ int main(void)
     }
 
 
-    fprintf(stderr, "inserts: %ld\n", map.inserts);
-    fprintf(stderr, "movs: %ld\n", map.stats.moves);
-    fprintf(stderr, "max move: %ld\n", map.stats.max_move);
+    //fprintf(stderr, "inserts: %ld\n", map.inserts);
+    //fprintf(stderr, "movs: %ld\n", map.stats.moves);
+    //fprintf(stderr, "max move: %ld\n", map.stats.max_move);
 }

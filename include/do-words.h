@@ -18,7 +18,7 @@ typedef struct {
 } Line;
 
 
-void do_words(FILE* stream, Lambda lam)  ;
+void do_words(FILE* stream, Lambda* lam)  ;
 
 bool end_of_line(Line ln) ; 
 int range_len(Range r) ;

@@ -22,5 +22,9 @@ typedef struct Lambda {
         *__lambda_value_ptr_casted_ = VALUE; \
         })
 
+#define SET_POINTED_VALUE(PTR, VALUE) ({\
+        typeof(VALUE)* __ptr_ = PTR; \
+        *__ptr_ = VALUE ; \
+        })
 
 #endif

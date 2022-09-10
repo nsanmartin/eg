@@ -3,29 +3,20 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <string.h>
-#include "hash.h"
-
-#define TABLE_INITIAL_SIZE 100
+#include "string-table.h"
 
 
-//Str strOfCstr(char* cstr, size_t len) {
-//    Str rv = { .cstr = cstr, .len = len };
-//    return rv;
-//}
+#include "lambda.h"
+#include "eg-result.h"
+#include "eg-str.h"
 
-bool strEq(Str x, Str y) { return x.len == y.len && strcmp(x.cstr, y.cstr) == 0; }
-//Str newStr(char* cstr) {
-//
-//}
 
-StringTable newStringTable() {
-    StringTable rv = malloc(sizeof (StringTable));
-    Entry* table = malloc(TABLE_INITIAL_SIZE * (sizeof (Entry)));
+StringTable stringTableWithSize(size_t size) {
+    Entry* table = malloc(size * (sizeof (Entry)));
 
-    struct StringTableData t = {
-        .table = table, .size = TABLE_INITIAL_SIZE, .inserts = 0, .stats ={0}
+    StringTable rv = {
+        .table = table, .size = size, .inserts = 0, .stats ={0}
     };
-    *rv = t;
     return rv;
 
 }
@@ -43,7 +34,7 @@ hash(unsigned char *str)
 }
 
 
-Entry* get(StringTable m, Str k) {
+Entry* stringTableGet(StringTable* m, Str k) {
     if (k.len == 0 || k.cstr == NULL) {
         fprintf(stderr, "Error: null key\n");
         exit(1);
@@ -54,18 +45,17 @@ Entry* get(StringTable m, Str k) {
     while (true) {
         Entry* rv =  &m->table[h];
         if (rv->k.cstr == NULL) {
-            if (++m->inserts > m->size * 8 / 10) {
+            if (++m->inserts > m->size * 65 / 100) {
                 fprintf(stderr, "Too many keys for map!\n");
                 exit(1);
             }
-            char* mem = malloc(k.len);
-            if (mem == NULL) {
+
+            Result r = { .ok = &rv->k, .err = false };
+            strCopy(k, r);
+            if (r.err) {
                 fprintf(stderr, "Memory error!\n");
                 exit(1);
             }
-            rv->k.cstr = mem;
-            rv->k.len = k.len;
-            strcpy(rv->k.cstr, k.cstr);
             if(nmovs > m->stats.max_move) { m->stats.max_move = nmovs; }
             return rv;
         } else if (strEq(rv->k, k)) {

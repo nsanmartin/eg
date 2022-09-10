@@ -1,6 +1,8 @@
 #include <stdio.h>
-#include "hash.h"
-#include "../word-freqs/include/do-words.h"
+#include "string-table.h"
+#include "do-words.h"
+
+#define TABLE_INITIAL_SIZE 100
 
 Str strFromRange(Range r) {
     *r.end = '\0';
@@ -8,33 +10,35 @@ Str strFromRange(Range r) {
     return rv;
 }
 
-//void table_entries_debug(StringTable t) {
-//    for (int i = 0; i < t->size; ++i) {
-//        Entry e = t->table[i];
-//        if (e.k.cstr != NULL) {
-//            printf("%s -> %d\n", e.k.cstr, e.v);
-//        }
-//    }
-//}
+void table_entries_debug(StringTable t) {
+    for (int i = 0; i < t.size; ++i) {
+        Entry e = t.table[i];
+        if (e.k.cstr != NULL) {
+            printf("%s -> %d\n", e.k.cstr, e.v);
+        }
+    }
+}
 
-void lam_print(Lambda lam, Range r) {
+void table_stats_debug(StringTable t) {
+    printf("size: %ld\n", t.size);
+    printf("inserts: %ld\n", t.inserts);
+    printf("moves: %ld\n", t.stats.moves);
+    printf("max_move: %ld\n", t.stats.max_move);
+}
+
+void lam_print(Lambda lam, void* arg) {
+    Range r = GET_POINTED_VALUE(Range, arg);
     *r.end = '\0';
     printf("%s\n", r.beg); 
 
-    Entry* e = get(lam.ctx, strFromRange(r));
-    //e->v++;
+    Entry* e = stringTableGet(lam.ctx, strFromRange(r));
+    e->v++;
 }
 
 int main() {
-    StringTable table = newStringTable();
-    //char cstr[] = "a string";
-    //Str s = strFromLit(cstr);
-    //Entry* e = get(table, s);
-    //e->v = 7;
-
-    //get(table, strFromLit("lala")) -> v = 9;
-    ////e->v = 9;
-    //table_entries_debug(table);
-    Lambda lambda = { .ctx = table, .app = &lam_print };
+    StringTable table = stringTableWithSize(TABLE_INITIAL_SIZE);
+    Lambda lambda = { .ctx = &table, .app = &lam_print };
     do_words(stdin, lambda);
+    table_entries_debug(table);
+    table_stats_debug(table);
 }

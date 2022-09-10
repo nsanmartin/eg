@@ -2,13 +2,9 @@
 #define __HASH_H_
 
 #include <stddef.h>
+#include "eg-str.h"
 
 #define LEN(arr) (sizeof(arr)/sizeof(arr[0]))
-
-typedef struct {
-    char* cstr;
-    int len;
-} Str;
 
 
 typedef struct {
@@ -21,18 +17,17 @@ typedef struct {
     long max_move;
 } TableStats;
 
-typedef struct StringTableData {
+typedef struct {
     Entry* table;
     unsigned long size;
     size_t inserts;
     TableStats stats;
-}* StringTable;
+} StringTable;
 
 
 unsigned long hash(unsigned char *str);
-StringTable newStringTable() ;
-Entry* get(StringTable m, Str k) ;
+StringTable stringTableWithSize(size_t size) ;
+Entry* stringTableGet(StringTable* m, Str k) ;
 
-#define strFromLit(CSTR) ({ Str rv = { .cstr = CSTR, .len = LEN(CSTR) }; rv; })
 
 #endif

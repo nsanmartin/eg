@@ -19,6 +19,12 @@ typedef struct {
 } VecEntry;
 
 
+int cmp_by_freq(const void* p, const void* q) {
+    const Entry* x = p;
+    const Entry* y = q;
+    return x->count - y->count;
+}
+
 int table_init(VecEntry* v, int initial_capacity) {
     *v = (VecEntry){
         .sz = 0,
@@ -38,12 +44,12 @@ Entry* table_get(const VecEntry* v, int i) {
     return &v->entries[i];
 }
 
-void tree_visitor(const void* node, VISIT which, int depth) {
-    if (which == postorder || which == leaf) {
-        const Entry* entry = *(Entry**)node;
-        printf("%s: %d\n", entry->key, entry->count);
-    }
-}
+//void tree_visitor(const void* node, VISIT which, int depth) {
+//    if (which == postorder || which == leaf) {
+//        const Entry* entry = *(Entry**)node;
+//        printf("%s: %d\n", entry->key, entry->count);
+//    }
+//}
 
 int table_duplicate(VecEntry* table) {
     table->cap *= 2;
@@ -90,8 +96,8 @@ int table_add_symbol(VecEntry* table, char* word) {
         }
 
         ep->data = (void*)index;
-        ep->key = strdup(word);
-        table->entries[index] = (Entry){ .key = ep->key, .count = 1 };
+        //ep->key = strdup(word);
+        table->entries[index] = (Entry){ .key = strdup(word), .count = 1 };
     } else {
         ++table->entries[index].count;
     }
@@ -132,7 +138,7 @@ int main (int argc, char ** argv) {
 
      // void* tree = NULL;
 
-     const int initial_capacity = 3;
+     const int initial_capacity = 30;
      VecEntry symbols;
      table_init(&symbols, initial_capacity);
 
@@ -144,6 +150,8 @@ int main (int argc, char ** argv) {
               return -1;
           }
      }
+
+     qsort(symbols.entries, symbols.sz, sizeof(Entry), cmp_by_freq);
 
      for (int i = 0; i < symbols.sz; ++i) {
          Entry* e = table_get(&symbols, i);

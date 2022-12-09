@@ -23,7 +23,7 @@ int table_init(VecEntry* v, int initial_capacity) {
     *v = (VecEntry){
         .sz = 0,
         .cap = initial_capacity,
-        .entries = malloc(v->cap * sizeof(Entry))
+        .entries = malloc(initial_capacity * sizeof(Entry))
     };
     if (!v->entries) { return -1; }
     int initial_htable_size = 1 + ((v->cap * 5) / 4);
@@ -147,7 +147,9 @@ int main (int argc, char ** argv) {
 
      for (int i = 0; i < symbols.sz; ++i) {
          Entry* e = table_get(&symbols, i);
-         printf("%s: %d\n", e->key, e->count);
+         if (e) {
+             printf("%s: %d\n", e->key, e->count);
+         }
      }
 
      return 0;

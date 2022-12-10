@@ -40,9 +40,8 @@ Entry* search(HashTable* m, const char* k) {
                 fprintf(stderr, "Memory error!\n");
                 return NULL;
             }
-            rv->value = NULL;
             return rv;
-        } else if (strcmp(rv->key, k)) {
+        } else if (strcmp(rv->key, k) == 0) {
             return rv;
         }
         h = (h + 1) % m->size;
@@ -53,7 +52,7 @@ Entry* search(HashTable* m, const char* k) {
 }
 
 int hashTableInit(HashTable* t, unsigned long nhashes) {
-    Entry* entries = malloc(sizeof (Entry) * nhashes);
+    Entry* entries = calloc(nhashes, sizeof (Entry));
     if (!entries) 
         return -1;
 

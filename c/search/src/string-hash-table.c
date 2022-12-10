@@ -7,6 +7,8 @@
 
 // https://stackoverflow.com/questions/7666509/hash-function-for-string
 
+Entry* search(HashTable* m, const char* k);
+
 unsigned long hash(const char *str)
 {
     unsigned long hash = 5381;
@@ -16,6 +18,32 @@ unsigned long hash(const char *str)
         hash = ((hash << 5) + hash) + c; /* hash * 33 + c */
 
     return hash;
+}
+
+int hashTableDuplicate(HashTable* t) {
+    Entry* entries = t->table;
+    unsigned long size = t->size;
+
+    int error = hashTableInit(t, size + size);
+    if (error) {
+        fprintf(stderr, "error duplicating hash table");
+        return -1;
+    }
+
+    for (int i = 0; i < size; ++i) {
+        Entry e = entries[i];
+        if (e.key) {
+            Entry* ep = search(t, e.key);
+            if (ep) {
+                ep->value = e.value;
+            } else {
+                fprintf(stderr, "error duplicating hash table");
+                return -1;
+            }
+        }
+    }
+    free(entries);
+    return 0;
 }
 
 
@@ -30,23 +58,30 @@ Entry* search(HashTable* m, const char* k) {
     while (true) {
         Entry* rv =  &m->table[h];
         if (rv->key == NULL) {
-            if (++m->inserts > m->size * 8 / 10) {
-                //todo increase size
-                fprintf(stderr, "Too many keys for map!\n");
-                exit(1);
+            if (m->inserts > m->size * 8 / 10) {
+                int error = hashTableDuplicate(m);
+                if (error) 
+                    return NULL;
             }
             rv->key = strdup(k);
             if (rv->key == NULL) {
                 fprintf(stderr, "Memory error!\n");
                 return NULL;
             }
+            ++m->inserts;
             return rv;
         } else if (strcmp(rv->key, k) == 0) {
             return rv;
         }
         h = (h + 1) % m->size;
-        //++m->stats.moves;
         nmovs++;
+        if (nmovs > m->size) {
+            int error = hashTableDuplicate(m);
+            if (error) 
+                return NULL;
+            nmovs = 0;
+            h = hash(k) % m->size;
+        }
     }
     return NULL;
 }

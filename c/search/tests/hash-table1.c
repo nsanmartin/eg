@@ -13,7 +13,7 @@ const char* strs[] =
 
 int main () {
     HashTable table;
-    hashTableInit(&table, 2);
+    hashTableInit(&table, 30);
 
     Entry* e;
     for (int i = 0; i < LEN(strs); ++i) {

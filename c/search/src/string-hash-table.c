@@ -60,8 +60,11 @@ Entry* search(HashTable* m, const char* k) {
         if (rv->key == NULL) {
             if (m->inserts > m->size * 8 / 10) {
                 int error = hashTableDuplicate(m);
+                nmovs = 0;
+                h = hash(k) % m->size;
                 if (error) 
                     return NULL;
+                continue;
             }
             rv->key = strdup(k);
             if (rv->key == NULL) {

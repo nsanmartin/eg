@@ -1,5 +1,7 @@
+words: wordhfreq wordhtablepp
+
 wordhfreq:
-	gcc -Wall -O3 -o ./build/$@ -I./include word-freq.c ./src/*.c
+	gcc -g -Wall -o ./build/$@ -I./include word-freq.c ./src/*.c
 
 wordhtablec:
 	gcc -g -Wall  -o ./build/$@ word-htable.c

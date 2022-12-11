@@ -6,7 +6,7 @@
 
 #define INITSZ 40
 
-int cmp_by_freq(const void* p, const void* q) 
+int testHashTable_cmp_by_freq(const void* p, const void* q) 
 {
     const Entry* x = p;
     const Entry* y = q;
@@ -15,7 +15,7 @@ int cmp_by_freq(const void* p, const void* q)
     return xcount - ycount;
 }
 
-int table_add_symbol(HashTable* t, char* word) 
+int testHashTable_table_add_symbol(HashTable* t, char* word) 
 {
     Entry* e = hashTableSearch(t, word);
     if (!e) 
@@ -24,7 +24,7 @@ int table_add_symbol(HashTable* t, char* word)
     return 0;
 }
 
-int count_words (HashTable* symbols, char* filename) 
+int testHashTable_count_words (HashTable* symbols, char* filename) 
 {
      FILE *fp;
      if ((fp = fopen(filename, "r"))) {
@@ -38,7 +38,7 @@ int count_words (HashTable* symbols, char* filename)
              char* token = strtok(line, delimiters);
              while(token) {
                  //printf("`%s'\n", token);
-                 int error = table_add_symbol(symbols, token);
+                 int error = testHashTable_table_add_symbol(symbols, token);
                  if (error) {
                      return error;
                  }
@@ -62,14 +62,14 @@ int main (int argc, char ** argv) {
 
      for (int i = 1; i < argc; i++) {
           char* fname = argv[i];
-          int error = count_words(&symbols, fname);
+          int error = testHashTable_count_words(&symbols, fname);
           if (error) {
               fprintf(stderr, "error counting words in %s\n", fname);
               return -1;
           }
      }
 
-     // qsort(symbols.table, symbols.size, sizeof(Entry), cmp_by_freq);
+     // qsort(symbols.table, symbols.size, sizeof(Entry), testHashTable_cmp_by_freq);
 
      for (int i = 0; i < symbols.size; ++i) {
          Entry e = symbols.table[i];

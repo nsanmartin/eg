@@ -1,9 +1,9 @@
+#define _GNU_SOURCE
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <search.h>
 
-#define _GNU_SOURCE
 
 typedef struct {
     int count;
@@ -13,7 +13,6 @@ typedef struct {
 int entry_cmp(const void* p, const void* q) { return strcmp(((Entry*)p)->key, ((Entry*)q)->key); }
 
 void free_node(void* nodep) {
-    printf("free node\n");
     Entry* e = nodep;
     free(e->key);
     free(e);

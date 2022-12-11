@@ -4,7 +4,6 @@
 #include <string.h>
 #include <search.h>
 
-#define _GNU_SOURCE
 
 
 typedef struct {
@@ -80,6 +79,13 @@ int table_add_symbol(VecEntry* table, char* word) {
             int error = table_duplicate(table);
             if (error) 
                 return error;
+
+            ep = hsearch(e, ENTER);
+            if (!ep) {
+                // unexpected, table size should be grater than htable size + 1
+                fprintf(stderr, "table is full and could not be duplicated.\n");
+                return -1;
+            }
         }
         index = table->sz++;
         //ep = hsearch(e, ENTER);
@@ -89,6 +95,10 @@ int table_add_symbol(VecEntry* table, char* word) {
         //    return -1;
         //}
 
+        if (!ep) {
+                fprintf(stderr, "WTH??\n");
+                exit(1);
+        }
         ep->data = (void*)index;
         ep->key = strdup(word);
         table->entries[index] = (Entry){ .key = ep->key, .count = 1 };
@@ -146,7 +156,7 @@ int main (int argc, char ** argv) {
           }
      }
 
-     qsort(symbols.entries, symbols.sz, sizeof(Entry), cmp_by_freq);
+     //qsort(symbols.entries, symbols.sz, sizeof(Entry), cmp_by_freq);
 
      for (int i = 0; i < symbols.sz; ++i) {
          Entry* e = table_get(&symbols, i);

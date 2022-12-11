@@ -19,7 +19,7 @@ int main () {
     for (int i = 0; i < LEN(strs); ++i) {
         const char* s = strs[i];
         printf("inserting %s\n", s);
-        e = search(&table, s);
+        e = hashTableSearch(&table, s);
         if (!e) {
             printf("error searching '%s'\n", s);
         } else {
@@ -31,7 +31,7 @@ int main () {
 
     for (int i = 0; i < LEN(strs); ++i) {
         const char* s = strs[i];
-        e = search(&table,s);
+        e = hashTableSearch(&table,s);
         if (!e) {
             printf("error searching '%s'\n",s);
         } else {

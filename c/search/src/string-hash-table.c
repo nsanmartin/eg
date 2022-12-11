@@ -7,10 +7,9 @@
 
 // https://stackoverflow.com/questions/7666509/hash-function-for-string
 
-Entry* search(HashTable* m, const char* k);
+Entry* hashTableSearch(HashTable* m, const char* k);
 
-unsigned long hash(const char *str)
-{
+unsigned long hash(const char *str) {
     unsigned long hash = 5381;
     int c;
 
@@ -33,7 +32,7 @@ int hashTableDuplicate(HashTable* t) {
     for (int i = 0; i < size; ++i) {
         Entry e = entries[i];
         if (e.key) {
-            Entry* ep = search(t, e.key);
+            Entry* ep = hashTableSearch(t, e.key);
             if (ep) {
                 ep->value = e.value;
             } else {
@@ -47,7 +46,7 @@ int hashTableDuplicate(HashTable* t) {
 }
 
 
-Entry* search(HashTable* m, const char* k) {
+Entry* hashTableSearch(HashTable* m, const char* k) {
     if (k == NULL) {
         fprintf(stderr, "Error: null key\n");
         return NULL;

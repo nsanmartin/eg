@@ -16,7 +16,7 @@ typedef struct {
 
 
 unsigned long hash(const char *str);
-Entry* search(HashTable* m, const char* k) ;
+Entry* hashTableSearch(HashTable* m, const char* k) ;
 int hashTableInit(HashTable* t, unsigned long nhashes);
 
 #endif

@@ -44,12 +44,6 @@ Entry* table_get(const VecEntry* v, int i) {
     return &v->entries[i];
 }
 
-//void tree_visitor(const void* node, VISIT which, int depth) {
-//    if (which == postorder || which == leaf) {
-//        const Entry* entry = *(Entry**)node;
-//        printf("%s: %d\n", entry->key, entry->count);
-//    }
-//}
 
 int table_duplicate(VecEntry* table) {
     table->cap *= 2;
@@ -88,16 +82,17 @@ int table_add_symbol(VecEntry* table, char* word) {
                 return error;
         }
         index = table->sz++;
-        ep = hsearch(e, ENTER);
-        if (!ep) {
-            // unexpected, table size should be grater than htable size + 1
-            fprintf(stderr, "table is full but was just duplicated :/!\n");
-            return -1;
-        }
+        //ep = hsearch(e, ENTER);
+        //if (!ep) {
+        //    // unexpected, table size should be grater than htable size + 1
+        //    fprintf(stderr, "table is full but was just duplicated :/!\n");
+        //    return -1;
+        //}
 
         ep->data = (void*)index;
-        //ep->key = strdup(word);
-        table->entries[index] = (Entry){ .key = strdup(word), .count = 1 };
+        ep->key = strdup(word);
+        table->entries[index] = (Entry){ .key = ep->key, .count = 1 };
+        //table->entries[index] = (Entry){ .key = strdup(word), .count = 1 };
     } else {
         ++table->entries[index].count;
     }

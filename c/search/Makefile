@@ -1,9 +1,12 @@
+wordhfreq:
+	gcc -Wall -O3 -o ./build/$@ -I./include word-freq.c ./src/*.c
+
 wordhtablec:
-	gcc -Wall -O3 -o ./build/$@ word-htable.c
+	gcc -g -Wall  -o ./build/$@ word-htable.c
 
 wordhtablepp:
 	g++ -Wall -O3 -o ./build/$@ word-table.cpp
 
 
 clean:
-	find -type f ./build -delete
+	find ./build -type f -delete

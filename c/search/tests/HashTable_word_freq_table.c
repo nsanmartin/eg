@@ -6,8 +6,7 @@
 
 #define INITSZ 40
 
-int testHashTable_cmp_by_freq(const void* p, const void* q) 
-{
+int testHashTable_cmp_by_freq(const void* p, const void* q) {
     const Entry* x = p;
     const Entry* y = q;
     const intptr_t xcount = (intptr_t) x->value;
@@ -15,71 +14,71 @@ int testHashTable_cmp_by_freq(const void* p, const void* q)
     return xcount - ycount;
 }
 
-int testHashTable_table_add_symbol(HashTable* t, char* word) 
-{
+int testHashTable_table_add_symbol(HashTable* t, char* word) {
     Entry* e = hashTableSearch(t, word);
     if (!e) 
-        return -1;
+        return hashTableGetError();
     e->value = (void*) 1+(intptr_t)e->value;
     return 0;
 }
 
-int testHashTable_count_words (HashTable* symbols, char* filename) 
-{
-     FILE *fp;
-     if ((fp = fopen(filename, "r"))) {
-         unsigned long nlines = 0;
-         char* line = NULL;
-         size_t len = 0;
-         ssize_t read;
-         const char* delimiters = " \t\n";
+int testHashTable_count_words (HashTable* symbols, FILE* fp) {
+    unsigned long nlines = 0;
+    char* line = NULL;
+    size_t len = 0;
+    ssize_t read;
+    const char* delimiters = " \t\n";
 
-         while ((read = getline(&line, &len, fp)) != -1) {
-             char* token = strtok(line, delimiters);
-             while(token) {
-                 //printf("`%s'\n", token);
-                 int error = testHashTable_table_add_symbol(symbols, token);
-                 if (error) {
-                     return error;
-                 }
-                 token = strtok(NULL, delimiters);
-             }
-              nlines++;
-         }
-         fclose(fp);
-     }
-     return fp == NULL;
+    while ((read = getline(&line, &len, fp)) != -1) {
+        char* token = strtok(line, delimiters);
+        while(token) {
+            int error = testHashTable_table_add_symbol(symbols, token);
+            if (error) {
+                return error;
+            }
+            token = strtok(NULL, delimiters);
+        }
+        nlines++;
+    }
+    fclose(fp);
+
+    return 0;
 }
 
 
 int main (int argc, char ** argv) {
-     if (argc < 2) 
-          printf("Uso: %s FILE [FILE ...]\n", argv[0]);
 
+    if (argc != 2)
+        printf("Uso: %s FILE [FILE ...]\n", argv[0]);
 
     HashTable symbols;
     hashTableInit(&symbols, INITSZ);
 
-     for (int i = 1; i < argc; i++) {
-          char* fname = argv[i];
-          int error = testHashTable_count_words(&symbols, fname);
-          if (error) {
-              fprintf(stderr, "error counting words in %s\n", fname);
-              return -1;
-          }
-     }
+    FILE *fp;
+    char* filename = argv[1];
+    if ((fp = fopen(filename, "r"))) {
 
-     // qsort(symbols.table, symbols.size, sizeof(Entry), testHashTable_cmp_by_freq);
+        int error = testHashTable_count_words(&symbols, fp);
+        if (error) {
+            fprintf(stderr, "error counting words in %s: %s\n",
+                    filename, hashTableErrToString(error));
+            return error;
+        }
 
-     for (int i = 0; i < symbols.size; ++i) {
-         Entry e = symbols.table[i];
-         intptr_t count = (intptr_t)e.value;
+        // qsort(symbols.table, symbols.size, sizeof(Entry), testHashTable_cmp_by_freq);
 
-         if (count) {
-             printf("%s: %ld\n", e.key, count);
-         }
-     }
+        for (int i = 0; i < symbols.size; ++i) {
+            Entry e = symbols.table[i];
+            intptr_t count = (intptr_t)e.value;
 
-     return 0;
+            if (count) {
+                printf("%s: %ld\n", e.key, count);
+            }
+        }
+    } else {
+        fprintf(stderr, "Error opening file '%s'.\n", filename);
+    }
+
+    return 0;
 }
 

@@ -1,0 +1,26 @@
+hsearch
+
+real	0m0,195s
+user	0m0,187s
+sys	0m0,008s
+HashTable
+
+real	0m0,133s
+user	0m0,133s
+sys	0m0,000s
+hsearch
+
+real	0m0,041s
+user	0m0,041s
+sys	0m0,000s
+HashTable
+
+real	0m0,018s
+user	0m0,014s
+sys	0m0,004s
+hsearch
+
+real	0m49,933s
+user	0m45,999s
+sys	0m3,932s
+HashTable

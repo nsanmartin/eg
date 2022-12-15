@@ -1,0 +1,15 @@
+hsearch real	0m0,015s user	0m0,011s sys	0m0,004s
+HashTable real	0m0,018s user	0m0,018s sys	0m0,000s
+ppsearch real	0m0,017s user	0m0,013s sys	0m0,004s
+
+hsearch real	0m0,199s user	0m0,151s sys	0m0,048s
+HashTable real	0m0,327s user	0m0,303s sys	0m0,024s
+ppsearch real	0m0,225s user	0m0,201s sys	0m0,024s
+
+hsearch real	0m2,045s user	0m1,717s sys	0m0,328s
+HashTable real	0m51,129s user	0m50,853s sys	0m0,272s
+ppsearch real	0m2,512s user	0m2,388s sys	0m0,124s
+
+hsearch real	0m0,197s user	0m0,185s sys	0m0,012s
+HashTable real	0m0,141s user	0m0,132s sys	0m0,008s
+ppsearch real	0m0,370s user	0m0,369s sys	0m0,000s

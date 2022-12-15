@@ -1,0 +1,52 @@
+
+hsearch real	0m0,195s user	0m0,187s sys	0m0,008s
+HashTable real	0m0,133s user	0m0,129s sys	0m0,004s
+ppsearch real	0m0,350s user	0m0,350s sys	0m0,000s
+
+hsearch real	0m0,041s user	0m0,037s sys	0m0,004s
+HashTable real	0m0,018s user	0m0,013s sys	0m0,005s
+ppsearch real	0m0,025s user	0m0,018s sys	0m0,007s
+
+hsearch real	0m0,001s user	0m0,001s sys	0m0,000s
+HashTable real	0m0,001s user	0m0,001s sys	0m0,000s
+ppsearch real	0m0,002s user	0m0,002s sys	0m0,000s
+
+hsearch real	0m0,001s user	0m0,001s sys	0m0,000s
+HashTable real	0m0,001s user	0m0,001s sys	0m0,000s
+ppsearch real	0m0,002s user	0m0,000s sys	0m0,002s
+
+hsearch real	0m0,006s user	0m0,006s sys	0m0,000s
+HashTable real	0m0,014s user	0m0,014s sys	0m0,000s
+ppsearch real	0m0,009s user	0m0,009s sys	0m0,000s
+
+hsearch real	0m0,014s user	0m0,004s sys	0m0,010s
+HashTable real	0m0,017s user	0m0,017s sys	0m0,000s
+ppsearch real	0m0,017s user	0m0,017s sys	0m0,000s
+
+hsearch real	0m0,183s user	0m0,151s sys	0m0,032s
+HashTable real	0m0,299s user	0m0,271s sys	0m0,028s
+ppsearch real	0m0,199s user	0m0,191s sys	0m0,008s
+
+hsearch real	0m1,960s user	0m1,632s sys	0m0,328s
+HashTable real	0m42,110s user	0m41,805s sys	0m0,304s
+ppsearch real	0m2,387s user	0m2,283s sys	0m0,104s
+
+hsearch real	0m0,191s user	0m0,175s sys	0m0,016s
+HashTable real	0m0,137s user	0m0,129s sys	0m0,008s
+ppsearch real	0m0,357s user	0m0,349s sys	0m0,008s
+
+hsearch real	0m0,001s user	0m0,001s sys	0m0,000s
+HashTable real	0m0,001s user	0m0,001s sys	0m0,000s
+ppsearch real	0m0,001s user	0m0,001s sys	0m0,000s
+
+hsearch real	0m0,001s user	0m0,001s sys	0m0,000s
+HashTable real	0m0,001s user	0m0,001s sys	0m0,000s
+ppsearch real	0m0,002s user	0m0,002s sys	0m0,000s
+
+hsearch real	0m0,001s user	0m0,001s sys	0m0,000s
+HashTable real	0m0,001s user	0m0,001s sys	0m0,000s
+ppsearch real	0m0,001s user	0m0,001s sys	0m0,000s
+
+hsearch real	0m0,001s user	0m0,001s sys	0m0,000s
+HashTable real	0m0,001s user	0m0,001s sys	0m0,000s
+ppsearch real	0m0,002s user	0m0,002s sys	0m0,000s

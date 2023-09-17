@@ -43,7 +43,17 @@ expr: expr '+' expr { $$ = $1 + $3; }
 
 extern FILE* yyin;
 
-int main() {
+int main(int argc, char* argv[]) {
+    if (argc > 1) {
+        FILE* f = fopen(argv[1], "r");
+        if (f) {
+            yyin = f;
+        } else {
+            fprintf(stderr, "error opening file: %s\n", argv[1]);
+            return -1;
+        }
+    }
+
     yyparse();
 }
 

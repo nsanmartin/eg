@@ -1,8 +1,5 @@
 %{
-#include <stdio.h>
-int yylex (void);
-void yyerror(char const*);
-double vars[26] = {0};
+#include "calcu.h"
 %}
 
 %union {
@@ -41,22 +38,11 @@ expr: expr '+' expr { $$ = $1 + $3; }
 
 %%
 
-extern FILE* yyin;
-
 int main(int argc, char* argv[]) {
-    if (argc > 1) {
-        FILE* f = fopen(argv[1], "r");
-        if (f) {
-            yyin = f;
-        } else {
-            fprintf(stderr, "error opening file: %s\n", argv[1]);
-            return -1;
-        }
+    int error = readParams(argc, argv);
+    if (error) {
+        return -1;
     }
-
     yyparse();
 }
 
-void yyerror(char const* s) {
-    fprintf(stderr, "error: %s\n", s);
-}

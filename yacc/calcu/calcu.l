@@ -1,7 +1,6 @@
 %{
 #include "calcu.tab.h"
 #include <math.h>
-extern double vars[26];
 %}
 
 %%
